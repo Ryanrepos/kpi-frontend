@@ -1,4 +1,5 @@
 import { Form } from 'antd';
+import { useUser } from 'hooks/useUserState';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +12,8 @@ export function LoginForm() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { set } = useJwt();
+  const { setUser } = useUser();
+
   const { appendData: login } = useQueryApiClient({
     request: {
       url: '/api/auth/login',
@@ -19,6 +22,7 @@ export function LoginForm() {
     onSuccess(response) {
       navigate('/', { unstable_viewTransition: true });
       set(response.data, 86400);
+      setUser(response.data.user);
     },
     onError() {
       form.setFields([

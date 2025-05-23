@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { User } from 'types/User';
 
 interface UserContextType {
-  user: any;
+  user: User | null;
   setUser: (user: User) => void;
   roleAccess: string | undefined;
 }
