@@ -1,13 +1,46 @@
 import { Form } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Input } from 'ui';
+import useJwt from 'utils/useJwt';
+import useQueryApiClient from 'utils/useQueryApiClient';
 
 export function LoginForm() {
   const { t } = useTranslation();
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { set } = useJwt();
+  const { appendData: login } = useQueryApiClient({
+    request: {
+      url: '/api/auth/login',
+      method: 'POST',
+    },
+    onSuccess(response) {
+      navigate('/', { unstable_viewTransition: true });
+      set(response.data, 86400);
+    },
+    onError() {
+      form.setFields([
+        {
+          name: 'userName',
+          errors: [t('nameOrPasswordWrong')],
+        },
+        {
+          name: 'password',
+          errors: [t('emailOrPasswordWrong')],
+        },
+      ]);
+    },
+  });
+
+  const onFinish = (value: any) => {
+    login(value);
+  };
+
   return (
     <div className="form-container">
-      <Form layout="vertical">
+      <Form form={form} layout="vertical" onFinish={onFinish}>
         <div className="form-group">
           <Input
             suffix={
@@ -32,10 +65,16 @@ export function LoginForm() {
                 </svg>
               </span>
             }
-            label={t('email')}
-            rules={[{ required: true, message: t('this_field_required') }]}
-            name="email"
-            type="email"
+            label={t('userName')}
+            placeholder="example"
+            name="userName"
+            rules={[
+              {
+                required: true,
+                message: t('field_is_required'),
+              },
+            ]}
+            maxLength={50}
           />
         </div>
 
@@ -50,7 +89,7 @@ export function LoginForm() {
 
         <div className="form-actions">
           <button type="submit" className={`login-button `}>
-            Sign In
+            {t('sign_in')}
           </button>
         </div>
       </Form>
