@@ -1,5 +1,6 @@
 import DefaultLayout from 'layouts/DefaultLayout';
 import { HomePage, Login } from 'pages';
+import { Sidebar } from 'lucide-react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import ProtectedUserRoute from 'routes/ProtectedUserRoutes';
 

@@ -6,13 +6,16 @@ export const StyledDefaultLayout = styled.div`
 
     width: calc(100vw - 260px);
     transition: 0.4s;
-    background-color: #f5f7fa;
   }
 
   .collapsed {
-    margin-left: 85px;
     width: calc(100vw - 95px);
   }
+
+  .header {
+    background: white;
+    height: 60px;
+}
 
   .admin-tabs {
     .ant-tabs-tab {
